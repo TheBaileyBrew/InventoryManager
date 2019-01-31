@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#55ffffff"
+    app:bbn_itemColorActive="@color/colorAccent"
+    app:bbn_itemColorInactive="@color/colorPrimaryDark"
+    app:bbn_rippleColor="@color/colorPrimary">
+    <item
+        android:id="@+id/dashboard_home"
+        android:icon="@drawable/details"
+        android:title="Details"/>
+    <item
+        android:id="@+id/new_stock"
+        android:icon="@drawable/add_stock"
+        android:title="New Stock"/>
+    <item
+        android:id="@+id/request_stock"
+        android:icon="@drawable/req_device"
+        android:title="Device Request"/>
+
+</menu>
