@@ -33,9 +33,6 @@ dependencies {
     //Flowing Drawer Implementation
     implementation 'com.nineoldandroids:library:2.4.0'
 
-    //AnyChart Visualization Implementation
-    implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
-
     //Navigation Menu Implementation (2.0.1-rc1 is written for JAVA - 3.0.0 is written for KOTLIN)
     implementation 'it.sephiroth.android.library.bottomnavigation:bottom-navigation:2.0.1-rc1'
 

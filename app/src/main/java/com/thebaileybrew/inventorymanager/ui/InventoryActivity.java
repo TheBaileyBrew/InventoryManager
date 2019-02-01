@@ -2,11 +2,13 @@ package com.thebaileybrew.inventorymanager.ui;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.thebaileybrew.inventorymanager.R;
 import com.thebaileybrew.inventorymanager.flowingDrawer.ElasticDrawer;
 import com.thebaileybrew.inventorymanager.flowingDrawer.FlowingDrawer;
+import com.thebaileybrew.inventorymanager.ui.fragments.DashDetailsFragment;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,6 +20,7 @@ public class InventoryActivity extends AppCompatActivity {
 
     private FlowingDrawer mDrawer;
     private BottomNavigation mNavStrip;
+    private MenuListFragment mMenuFrag;
 
 
     @Override
@@ -61,12 +64,15 @@ public class InventoryActivity extends AppCompatActivity {
                 switch(i1) {
                     case 0:
                         Toast.makeText(InventoryActivity.this, "Tab 1 selected", Toast.LENGTH_SHORT).show();
+                        loadFragment("dashboard_details");
                         break;
                     case 1:
                         Toast.makeText(InventoryActivity.this, "Tab 2 selected", Toast.LENGTH_SHORT).show();
+                        loadFragment("dashboard_add");
                         break;
                     case 2:
                         Toast.makeText(InventoryActivity.this, "Tab 3 selected", Toast.LENGTH_SHORT).show();
+                        loadFragment("dashboard_request");
                         break;
                 }
 
@@ -93,10 +99,27 @@ public class InventoryActivity extends AppCompatActivity {
         mDrawer.setTouchMode(ElasticDrawer.TOUCH_MODE_BEZEL);
 
         FragmentManager fm = getSupportFragmentManager();
-        MenuListFragment mMenuFrag = (MenuListFragment) fm.findFragmentById(R.id.menu_container);
+        mMenuFrag = (MenuListFragment) fm.findFragmentById(R.id.menu_container);
         if (mMenuFrag == null) {
             mMenuFrag = new MenuListFragment();
             fm.beginTransaction().add(R.id.menu_container, mMenuFrag).commit();
         }
+
     }
+
+    private void loadFragment(String fragmentName) {
+        FragmentManager fm = getSupportFragmentManager();
+        switch (fragmentName) {
+            case "dashboard_details":
+                DashDetailsFragment dashDetailsFragment = (DashDetailsFragment) fm.findFragmentById(R.id.display_frag_container);
+                if (dashDetailsFragment == null) {
+                    dashDetailsFragment = new DashDetailsFragment();
+                    fm.beginTransaction().add(R.id.display_frag_container, dashDetailsFragment).commit();
+                }
+
+
+        }
+    }
+
+
 }

@@ -10,29 +10,39 @@
     app:edMenuSize="260dp">
 
     <!-- Main display content-->
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="hello this is a tab"
-            android:layout_gravity="center"/>
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+        <FrameLayout
+            android:id="@+id/display_frag_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintBottom_toTopOf="@id/navigation_tab_strip"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
         <it.sephiroth.android.library.bottomnavigation.BottomNavigation
             android:id="@+id/navigation_tab_strip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_gravity="bottom"
             android:background="@color/colorPrimary"
             app:bbn_entries="@menu/bottom_menu_bar_nav"/>
 
         <!-- Include Fragment layout ... view pager? -->
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Flowing Drawer Menu Layout-->
     <com.thebaileybrew.inventorymanager.flowingDrawer.FlowingMenuLayout

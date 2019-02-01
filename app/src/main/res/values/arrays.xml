@@ -5,4 +5,20 @@
         <item>Stock</item>
         <item>Request</item>
     </string-array>
+
+    <string-array name="arc_colors">
+        <item>#F9A825</item>
+        <item>#FF8F00</item>
+        <item>#EF6C00</item>
+        <item>#D84315</item>
+        <item>#C62828</item>
+    </string-array>
+
+    <string-array name="arc_bg_colors">
+        <item>#60F9A825</item>
+        <item>#60FF8F00</item>
+        <item>#60EF6C00</item>
+        <item>#60D84315</item>
+        <item>#60C62828</item>
+    </string-array>
 </resources>

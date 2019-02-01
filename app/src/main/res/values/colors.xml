@@ -6,4 +6,11 @@
 
     <color name="colorError">#C62828</color>
     <color name="colorSuccess">#2E7D32</color>
+
+
+    <color name="colorArrayOne">#F9A825</color>
+    <color name="colorArrayTwo">#FF8F00</color>
+    <color name="colorArrayThree">#EF6C00</color>
+    <color name="colorArrayFour">#D84315</color>
+    <color name="colorArrayFive">#C62828</color>
 </resources>
