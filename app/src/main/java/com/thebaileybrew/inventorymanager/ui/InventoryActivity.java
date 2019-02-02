@@ -9,10 +9,12 @@ import com.thebaileybrew.inventorymanager.R;
 import com.thebaileybrew.inventorymanager.flowingDrawer.ElasticDrawer;
 import com.thebaileybrew.inventorymanager.flowingDrawer.FlowingDrawer;
 import com.thebaileybrew.inventorymanager.ui.fragments.DashDetailsFragment;
+import com.thebaileybrew.inventorymanager.ui.fragments.DashReceiveFragment;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 
@@ -109,12 +111,31 @@ public class InventoryActivity extends AppCompatActivity {
 
     private void loadFragment(String fragmentName) {
         FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        //TODO: Figure out how to clear fragment so new reference can be created...
         switch (fragmentName) {
             case "dashboard_details":
                 DashDetailsFragment dashDetailsFragment = (DashDetailsFragment) fm.findFragmentById(R.id.display_frag_container);
                 if (dashDetailsFragment == null) {
                     dashDetailsFragment = new DashDetailsFragment();
-                    fm.beginTransaction().add(R.id.display_frag_container, dashDetailsFragment).commit();
+                    transaction.add(R.id.display_frag_container, dashDetailsFragment).commit();
+                } else {
+                    dashDetailsFragment = new DashDetailsFragment();
+                    transaction.replace(R.id.display_frag_container, dashDetailsFragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                }
+                break;
+            case "dashboard_add":
+                DashReceiveFragment dashReceiveFragment = (DashReceiveFragment) fm.findFragmentById(R.id.display_frag_container);
+                if (dashReceiveFragment == null) {
+                    dashReceiveFragment = new DashReceiveFragment();
+                    transaction.add(R.id.display_frag_container, dashReceiveFragment).commit();
+                } else {
+                    dashReceiveFragment = new DashReceiveFragment();
+                    transaction.replace(R.id.display_frag_container, dashReceiveFragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
                 }
 
 

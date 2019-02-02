@@ -25,15 +25,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import static com.thebaileybrew.inventorymanager.data.AllAboutTheConstants.MODEL_COUNT;
+import static com.thebaileybrew.inventorymanager.data.AllAboutTheConstants.APPLE_IPHONE;
+import static com.thebaileybrew.inventorymanager.data.AllAboutTheConstants.MOTOROLA_MC3200;
+import static com.thebaileybrew.inventorymanager.data.AllAboutTheConstants.SWEEP_ANGLE;
+import static com.thebaileybrew.inventorymanager.data.AllAboutTheConstants.UNITECH_HT682;
+import static com.thebaileybrew.inventorymanager.data.AllAboutTheConstants.UNITECH_PA710;
+import static com.thebaileybrew.inventorymanager.data.AllAboutTheConstants.ZEBRA_TC71;
+
 public class DashDetailsFragment extends Fragment implements OrdersRecyclerAdapter.OrdersRecyclerAdapterClickHandler {
     private final static String TAG = DashDetailsFragment.class.getSimpleName();
-    private final static int MODEL_COUNT = 5;
-    private final static int SWEEP_ANGLE = 270;
-    private final static String MOTOROLA_MC3200 = "Motorola MC3200";
-    private final static String UNITECH_HT682 = "Unitech HT682";
-    private final static String ZEBRA_TC71 = "Zebra TC71";
-    private final static String APPLE_IPHONE = "Apple iPhone";
-    private final static String UNITECH_PA710 = "Unitech PA710";
 
     ArcProgressStackView arcViewInventory;
     RecyclerView orderStatusRecycler;
@@ -74,6 +75,7 @@ public class DashDetailsFragment extends Fragment implements OrdersRecyclerAdapt
     }
 
     private void buildArrayList() {
+        //TODO: Set up Arraylist with data collected from Firebase/Room DB
         String[] orderDates = {"01/01/2018", "07/14/2018", "04/12/2019", "01/16/2018", "06/16/2014", "09/19/2019", "10/01/2018"};
         String[] expectedDates = {"02/18/2018", "07/19/2018", "04/14/2019", "01/31/2018", "06/28/2014", "09/27/2019", "10/09/2018"};
         String[] itemTypes = {"Motorola MC3200", "Unitech PA710", "Apple iPhone", "Apple iPhone", "Zebra TC71", "Zebra TC71", "Unitech HT682"};
@@ -101,6 +103,7 @@ public class DashDetailsFragment extends Fragment implements OrdersRecyclerAdapt
 
         //Set the arc models
         final ArrayList<ArcProgressStackView.Model> models = new ArrayList<>();
+        //TODO Set progress based on value collected from Firebase/Room DB
         models.add(new ArcProgressStackView.Model(" ", calculateProgress(MOTOROLA_MC3200), arcBGColors[0], arcStartColors[0]));
         models.add(new ArcProgressStackView.Model(" ", calculateProgress(UNITECH_HT682), arcBGColors[1], arcStartColors[1]));
         models.add(new ArcProgressStackView.Model(" ", calculateProgress(ZEBRA_TC71), arcBGColors[2], arcStartColors[2]));

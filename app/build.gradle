@@ -30,6 +30,9 @@ dependencies {
     //Picasso Image Implementation
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    //Spinner Selector Implementation
+    implementation 'com.github.ganfra:material-spinner:2.0.0'
+
     //Flowing Drawer Implementation
     implementation 'com.nineoldandroids:library:2.4.0'
 

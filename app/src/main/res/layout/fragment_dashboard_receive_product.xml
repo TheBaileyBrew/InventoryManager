@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="6dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+        <fr.ganfra.materialspinner.MaterialSpinner
+            android:id="@+id/spinner_product_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ms_enableFloatingLabel="true"
+            app:ms_floatingLabelText="Product Type"
+            app:ms_hint="Product Type Here"
+            app:ms_baseColor="@color/colorAccent"
+            app:ms_highlightColor="@color/colorPrimary"
+            app:ms_thickness="2dp"
+            app:ms_hintColor="@color/colorPrimaryDark"
+            app:ms_alignLabels="true"
+            app:ms_floatingLabelColor="@color/colorPrimaryDark"
+            />
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
