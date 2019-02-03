@@ -13,6 +13,7 @@ import com.thebaileybrew.inventorymanager.ui.fragments.DashReceiveFragment;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
@@ -23,6 +24,8 @@ public class InventoryActivity extends AppCompatActivity {
     private FlowingDrawer mDrawer;
     private BottomNavigation mNavStrip;
     private MenuListFragment mMenuFrag;
+
+    private Fragment loadedFragment = null;
 
 
     @Override
@@ -112,28 +115,29 @@ public class InventoryActivity extends AppCompatActivity {
     private void loadFragment(String fragmentName) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
+
         //TODO: Figure out how to clear fragment so new reference can be created...
         switch (fragmentName) {
             case "dashboard_details":
-                DashDetailsFragment dashDetailsFragment = (DashDetailsFragment) fm.findFragmentById(R.id.display_frag_container);
-                if (dashDetailsFragment == null) {
-                    dashDetailsFragment = new DashDetailsFragment();
-                    transaction.add(R.id.display_frag_container, dashDetailsFragment).commit();
+                if (loadedFragment == null) {
+                    loadedFragment = new DashDetailsFragment();
+                    transaction.add(R.id.display_frag_container, loadedFragment).commit();
                 } else {
-                    dashDetailsFragment = new DashDetailsFragment();
-                    transaction.replace(R.id.display_frag_container, dashDetailsFragment);
+                    if (fm.findFragmentById(R.id.display_frag_container) instanceof DashReceiveFragment)
+                    loadedFragment = new DashDetailsFragment();
+                    transaction.replace(R.id.display_frag_container, loadedFragment);
                     transaction.addToBackStack(null);
                     transaction.commit();
                 }
                 break;
             case "dashboard_add":
-                DashReceiveFragment dashReceiveFragment = (DashReceiveFragment) fm.findFragmentById(R.id.display_frag_container);
-                if (dashReceiveFragment == null) {
-                    dashReceiveFragment = new DashReceiveFragment();
-                    transaction.add(R.id.display_frag_container, dashReceiveFragment).commit();
+                if (loadedFragment == null) {
+                    loadedFragment = new DashReceiveFragment();
+                    transaction.add(R.id.display_frag_container, loadedFragment).commit();
                 } else {
-                    dashReceiveFragment = new DashReceiveFragment();
-                    transaction.replace(R.id.display_frag_container, dashReceiveFragment);
+                    if (fm.findFragmentById(R.id.display_frag_container) instanceof DashDetailsFragment)
+                        loadedFragment = new DashReceiveFragment();
+                    transaction.replace(R.id.display_frag_container, loadedFragment);
                     transaction.addToBackStack(null);
                     transaction.commit();
                 }

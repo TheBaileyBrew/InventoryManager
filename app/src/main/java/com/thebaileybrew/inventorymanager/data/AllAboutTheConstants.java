@@ -10,5 +10,9 @@ public class AllAboutTheConstants {
     public final static String APPLE_IPHONE = "Apple iPhone";
     public final static String UNITECH_PA710 = "Unitech PA710";
 
+    public final static String SALES = "Sales HOSS";
+    public final static String CUSTOMER = "Customer HOSS";
+    public final static String INHOUSE = "In-House HOSS";
+
 
 }
