@@ -115,20 +115,21 @@ public class DashReceiveFragment extends Fragment implements AdapterView.OnItemS
 
     @Override
     public void onClick(View v) {
-        DatePickerDialog datePicker = new DatePickerDialog(getActivity(), this, 2019,01,01);
+        DatePickerDialog datePicker = new DatePickerDialog(getActivity(), R.style.MyDialogTheme, this, 2019,01,01);
 
         switch(v.getId()) {
             case R.id.ordered_date_picker:
-
+                datePicker.show();
                 break;
             case R.id.expected_date_picker:
-
+                datePicker.show();
                 break;
         }
     }
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        
+                String ordered = month + "/" + dayOfMonth + "/" + year;
+                orderedDate.setText(ordered);
     }
 }
