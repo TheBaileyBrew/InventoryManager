@@ -60,9 +60,21 @@
         android:textSize="20sp"
         custom:pb_colorNormal="@color/colorPrimaryDark"
         app:pb_colorPressed="@color/colorPrimary"
-
         app:pb_colorError="@color/colorError"
         app:pb_colorComplete="@color/colorSuccess"
         app:pb_colorProgress="@color/colorAccent"/>
+
+    <Button
+        android:id="@+id/register_user"
+        style="@style/Base.Widget.AppCompat.Button.Borderless"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="48dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@color/colorAccent"
+        android:text="Register New User..."/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

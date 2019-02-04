@@ -7,12 +7,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.dd.processbutton.iml.ActionProcessButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.thebaileybrew.inventorymanager.R;
 import com.thebaileybrew.inventorymanager.listeners.EditTextWatcher;
+
+import static com.thebaileybrew.inventorymanager.data.AllAboutTheConstants.REGISTERED_USER;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -21,11 +25,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditTextWatcher editTextWatcherLogin, editTextWatcherPassword;
 
     private ActionProcessButton buttonLogin;
+    private Button buttonRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        Intent getIntent = getIntent();
+        Boolean registered = getIntent.getBooleanExtra(REGISTERED_USER, false);
+        if (registered) {
+            Toast.makeText(this, "New User Registered", Toast.LENGTH_SHORT).show();
+        }
         initViews();
         initListeners();
 
@@ -34,6 +44,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void initListeners() {
         buttonLogin.setOnClickListener(this);
+        buttonRegister.setOnClickListener(this);
         editTextWatcherLogin = new EditTextWatcher(mLoginEditText, mLoginLayout);
         editTextWatcherPassword = new EditTextWatcher(mPasswordEditText, mPasswordLayout);
     }
@@ -41,6 +52,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void initViews() {
         buttonLogin = findViewById(R.id.progress_loading_button);
         buttonLogin.setMode(ActionProcessButton.Mode.ENDLESS);
+        buttonRegister = findViewById(R.id.register_user);
 
         //Set associations for EditTexts
         mLoginEditText = findViewById(R.id.input_text_user);
@@ -82,6 +94,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     loadProgress();
                 }
                 break;
+            case R.id.register_user:
+                Intent registerUser = new Intent(LoginActivity.this, RegisterUser.class);
+                startActivity(registerUser);
+                break;
         }
     }
 
@@ -91,7 +107,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void run() {
                 buttonLogin.setProgress(100);
-                Intent startActivity = new Intent(LoginActivity.this,InventoryActivity.class);
+                Intent startActivity = new Intent(LoginActivity.this, InventoryActivity.class);
                 startActivity(startActivity);
             }
         };

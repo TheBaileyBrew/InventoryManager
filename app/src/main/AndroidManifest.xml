@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.InventoryActivity" />
+        <activity android:name=".ui.RegisterUser" />
     </application>
 
 </manifest>

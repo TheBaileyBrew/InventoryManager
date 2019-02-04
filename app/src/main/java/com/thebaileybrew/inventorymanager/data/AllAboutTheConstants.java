@@ -14,5 +14,7 @@ public class AllAboutTheConstants {
     public final static String CUSTOMER = "Customer HOSS";
     public final static String INHOUSE = "In-House HOSS";
 
+    public final static String REGISTERED_USER = "registered";
+
 
 }
