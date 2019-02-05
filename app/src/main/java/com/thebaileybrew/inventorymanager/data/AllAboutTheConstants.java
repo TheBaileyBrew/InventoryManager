@@ -15,6 +15,8 @@ public class AllAboutTheConstants {
     public final static String INHOUSE = "In-House HOSS";
 
     public final static String REGISTERED_USER = "registered";
+    public static final String USERNAME = "username";
+    public static final String PASSWORD = "password";
 
 
 }

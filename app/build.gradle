@@ -39,8 +39,17 @@ dependencies {
     //Navigation Menu Implementation (2.0.1-rc1 is written for JAVA - 3.0.0 is written for KOTLIN)
     implementation 'it.sephiroth.android.library.bottomnavigation:bottom-navigation:2.0.1-rc1'
 
+    //Firebase Implementations
+    implementation 'com.google.firebase:firebase-core:16.0.7'
+    implementation 'com.google.firebase:firebase-database:16.0.6'
+    //Firebase User Authentication
+    implementation 'com.google.firebase:firebase-auth:16.1.0'
+    implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test:rules:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 }
+
+apply plugin: 'com.google.gms.google-services'

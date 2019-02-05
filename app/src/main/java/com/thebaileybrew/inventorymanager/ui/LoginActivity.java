@@ -1,5 +1,6 @@
 package com.thebaileybrew.inventorymanager.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -11,12 +12,19 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.dd.processbutton.iml.ActionProcessButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.thebaileybrew.inventorymanager.R;
 import com.thebaileybrew.inventorymanager.listeners.EditTextWatcher;
 
+import static com.thebaileybrew.inventorymanager.data.AllAboutTheConstants.PASSWORD;
 import static com.thebaileybrew.inventorymanager.data.AllAboutTheConstants.REGISTERED_USER;
+import static com.thebaileybrew.inventorymanager.data.AllAboutTheConstants.USERNAME;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -27,17 +35,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private ActionProcessButton buttonLogin;
     private Button buttonRegister;
 
+    private FirebaseAuth mAuth;
+    private String username, password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        mAuth = FirebaseAuth.getInstance();
+        initViews();
+        initListeners();
         Intent getIntent = getIntent();
         Boolean registered = getIntent.getBooleanExtra(REGISTERED_USER, false);
         if (registered) {
             Toast.makeText(this, "New User Registered", Toast.LENGTH_SHORT).show();
+            username = getIntent.getStringExtra(USERNAME);
+            password = getIntent.getStringExtra(PASSWORD);
+            mLoginEditText.setText(username);
+            mPasswordEditText.setText(password);
         }
-        initViews();
-        initListeners();
+
 
 
     }
@@ -89,9 +106,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     mPasswordEditText.clearFocus();
                     mPasswordLayout.setErrorEnabled(false);
                     mLoginLayout.setErrorEnabled(false);
-                    buttonLogin.setProgress(3);
-                    //Progress is set to 100 on validation of edit text entries via login logic to be determined
-                    loadProgress();
+                    signinWithFirebase();
                 }
                 break;
             case R.id.register_user:
@@ -101,17 +116,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private void loadProgress() {
-        Handler handler = new Handler();
-        Runnable loader = new Runnable() {
-            @Override
-            public void run() {
-                buttonLogin.setProgress(100);
-                Intent startActivity = new Intent(LoginActivity.this, InventoryActivity.class);
-                startActivity(startActivity);
-            }
-        };
-        handler.postDelayed(loader, 1000);
+    private void signinWithFirebase() {
+
+        buttonLogin.setProgress(3);
+
+        mAuth.signInWithEmailAndPassword(username, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            Toast.makeText(LoginActivity.this, "Logging in as " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                            buttonLogin.setProgress(100);
+                            Intent loadInventory = new Intent(LoginActivity.this, InventoryActivity.class);
+                            startActivity(loadInventory);
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Could not login with user credentials", Toast.LENGTH_SHORT).show();
+                            buttonLogin.setProgress(0);
+                        }
+                    }
+                });
     }
 
 }
