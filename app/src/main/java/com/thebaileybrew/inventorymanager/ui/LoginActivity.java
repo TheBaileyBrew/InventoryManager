@@ -106,6 +106,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     mPasswordEditText.clearFocus();
                     mPasswordLayout.setErrorEnabled(false);
                     mLoginLayout.setErrorEnabled(false);
+                    username = mLoginEditText.getText().toString();
+                    password = mPasswordEditText.getText().toString();
                     signinWithFirebase();
                 }
                 break;

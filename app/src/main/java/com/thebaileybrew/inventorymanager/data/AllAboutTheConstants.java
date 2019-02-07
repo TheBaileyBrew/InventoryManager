@@ -18,5 +18,8 @@ public class AllAboutTheConstants {
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
 
+    public final static String CURRENT_ORDER_VALUE = "order_value";
+    public final static String INITIAL_ORDER_CREATED = "order_created";
+
 
 }

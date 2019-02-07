@@ -3,25 +3,28 @@ package com.thebaileybrew.inventorymanager.data.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Order implements Parcelable {
+import java.util.List;
+
+public class Order {
 
     private String itemType;
     private String orderDate;
     private String expectedDate;
     private String orderQuantity;
+    private List<String> orderedUnits;
+    private String orderID;
 
-    public static final Creator<Order> CREATOR = new Creator<Order>() {
-        @Override
-        public Order createFromParcel(Parcel in) {
-            return new Order(in);
-        }
 
-        @Override
-        public Order[] newArray(int size) {
-            return new Order[size];
-        }
-    };
     public Order() {}
+
+    public Order(String orderDate, String expectedDate, String itemType, String orderQuantity, List<String> orderedUnits, String orderID) {
+        this.orderID = orderID;
+        this.orderDate = orderDate;
+        this.expectedDate = expectedDate;
+        this.itemType = itemType;
+        this.orderQuantity = orderQuantity;
+        this.orderedUnits = orderedUnits;
+    }
 
     public void setItemType(String itemType) {
         this.itemType = itemType;
@@ -55,24 +58,19 @@ public class Order implements Parcelable {
         return orderQuantity;
     }
 
-    private Order(Parcel in) {
-        itemType = in.readString();
-        orderDate = in.readString();
-        expectedDate = in.readString();
-        orderQuantity = in.readString();
+    public void setOrderedUnits(List<String> orderedUnits) {
+        this.orderedUnits = orderedUnits;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public List<String> getOrderedUnits() {
+        return orderedUnits;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(itemType);
-        dest.writeString(orderDate);
-        dest.writeString(expectedDate);
-        dest.writeString(orderQuantity);
+    public void setOrderID(String orderID) {
+        this.orderID = orderID;
+    }
 
+    public String getOrderID() {
+        return orderID;
     }
 }

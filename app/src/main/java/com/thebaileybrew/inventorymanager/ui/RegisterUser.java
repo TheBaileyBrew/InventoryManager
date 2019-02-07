@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.dd.processbutton.iml.ActionProcessButton;
+import com.firebase.ui.auth.data.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -20,7 +21,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.thebaileybrew.inventorymanager.R;
+import com.thebaileybrew.inventorymanager.data.models.Userdata;
 import com.thebaileybrew.inventorymanager.listeners.EditTextWatcher;
 
 import java.util.regex.Matcher;
@@ -39,12 +44,14 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
 
     private TextInputEditText mFirstName, mLastName, mUsername, mPassword, mPasswordVerify;
     private TextInputLayout mFirstLayout, mLastLayout, mUsernameLayout, mPasswordLayout, mPasswordVerifyLayout;
-    private TextWatcher firstNameWatcher, lastNameWatcher, usernameWatcher, passwordWatcher, passwordVerifyWatcher;
 
     private ActionProcessButton buttonRegister;
 
     private FirebaseAuth mAuth;
     private FirebaseUser mNewUser;
+
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mUserDatabaseReference;
 
 
     @Override
@@ -52,7 +59,9 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
+        mUserDatabaseReference = mFirebaseDatabase.getReference().child("users");
 
         initViews();
         initListeners();
@@ -100,18 +109,19 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
 
     private void registerUser(FirebaseUser user) {
         if (mNewUser != null) {
-            Toast.makeText(this, "Current user is: " + mNewUser.getEmail(), Toast.LENGTH_SHORT).show();
-        } else {
-            sendUserDetailsToFirebase(mUsername.getText().toString(), mPassword.getText().toString(), mFirstName.getText().toString(), mLastName.getText().toString());
-            //registerUserViaEmail();
-            Intent returnToLogin = new Intent(RegisterUser.this, LoginActivity.class);
-            returnToLogin.putExtra(USERNAME, mUsername.getText().toString());
-            returnToLogin.putExtra(PASSWORD, mPasswordVerify.getText().toString());
-            returnToLogin.putExtra(REGISTERED_USER, true);
-            startActivity(returnToLogin);
-
+            Toast.makeText(this, "Logging out of current user: " + mNewUser.getEmail(), Toast.LENGTH_SHORT).show();
+            mAuth.signOut();
         }
 
+        sendUserDetailsToFirebase(mUsername.getText().toString(), mPassword.getText().toString(), mFirstName.getText().toString(), mLastName.getText().toString());
+        //registerUserViaEmail();
+        Userdata thisUser = new Userdata(mFirstName.getText().toString(), mLastName.getText().toString(), mUsername.getText().toString(), mPassword.getText().toString());
+        mUserDatabaseReference.push().setValue(thisUser);
+        Intent returnToLogin = new Intent(RegisterUser.this, LoginActivity.class);
+        returnToLogin.putExtra(USERNAME, mUsername.getText().toString());
+        returnToLogin.putExtra(PASSWORD, mPasswordVerify.getText().toString());
+        returnToLogin.putExtra(REGISTERED_USER, true);
+        startActivity(returnToLogin);
     }
 
     private void registerUserViaEmail() {
@@ -148,6 +158,26 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
 
     private boolean validateForm() {
         boolean valid = true;
+
+        String firstName = mFirstName.getText().toString();
+        if (TextUtils.isEmpty(firstName)) {
+            mFirstLayout.setErrorEnabled(true);
+            mFirstLayout.setError("Invalid Name");
+            valid = false;
+        } else {
+            mFirstLayout.setErrorEnabled(false);
+            mFirstLayout.setError(null);
+        }
+
+        String lastName = mLastName.getText().toString();
+        if (TextUtils.isEmpty(firstName)) {
+            mLastLayout.setErrorEnabled(true);
+            mLastLayout.setError("Invalid Name");
+            valid = false;
+        } else {
+            mLastLayout.setErrorEnabled(false);
+            mLastLayout.setError(null);
+        }
 
         String emailAddress = mUsername.getText().toString();
         if (TextUtils.isEmpty(emailAddress)) {

@@ -1,6 +1,8 @@
 package com.thebaileybrew.inventorymanager.ui;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -27,6 +29,8 @@ public class InventoryActivity extends AppCompatActivity {
 
     private Fragment loadedFragment = null;
 
+    private SharedPreferences prefs;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +38,11 @@ public class InventoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_inventory);
         initViews();
         setupToolbar();
+        getCurrentPrefs();
+    }
+
+    private void getCurrentPrefs() {
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     @Override

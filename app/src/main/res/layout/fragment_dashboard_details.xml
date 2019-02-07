@@ -79,6 +79,7 @@
             app:layout_constraintTop_toTopOf="@id/arc_color_key"
             app:layout_constraintStart_toEndOf="@id/arc_color_key">
             <TextView
+                android:id="@+id/mc3200_quantity"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -89,6 +90,7 @@
                 android:shadowDx="2"
                 android:shadowRadius="2"/>
             <TextView
+                android:id="@+id/ht682_quantity"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -99,6 +101,7 @@
                 android:shadowDx="2"
                 android:shadowRadius="2"/>
             <TextView
+                android:id="@+id/tc71_quantity"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -109,6 +112,7 @@
                 android:shadowDx="2"
                 android:shadowRadius="2"/>
             <TextView
+                android:id="@+id/iphone_quantity"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -119,6 +123,7 @@
                 android:shadowDx="2"
                 android:shadowRadius="2"/>
             <TextView
+                android:id="@+id/pa710_quantity"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
