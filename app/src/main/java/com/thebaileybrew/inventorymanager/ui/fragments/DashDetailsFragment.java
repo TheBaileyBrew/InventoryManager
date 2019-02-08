@@ -72,6 +72,107 @@ public class DashDetailsFragment extends Fragment implements OrdersRecyclerAdapt
         mDevicesDatabaseReference = mFirebaseDatabase.getReference().child("devices");
         mOrdersDatabaseReference = mFirebaseDatabase.getReference().child("orders");
 
+
+    }
+
+    private void getCurrentInventoryValues() {
+        //Value Change Listeners for total inventory levels by item
+        mDevicesDatabaseReference = mFirebaseDatabase.getReference().child("devices");
+        mDevicesDatabaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                initializeArcView();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        mDevicesDatabaseReference.orderByChild("deviceModel").startAt(MOTOROLA_MC3200).endAt("Motorola MC3200\uf8ff").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                motoMCount = (int) dataSnapshot.getChildrenCount();
+                MotoMC3200Text.setText(String.valueOf(motoMCount));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        mDevicesDatabaseReference.orderByChild("deviceModel").startAt(ZEBRA_TC71).endAt("Zebra TC71\uf8ff").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                zebTCount = (int) dataSnapshot.getChildrenCount();
+                ZebraTC71Text.setText(String.valueOf(zebTCount));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        mDevicesDatabaseReference.orderByChild("deviceModel").startAt(UNITECH_HT682).endAt("Unitech HT682\uf8ff").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                uniHCount = (int) dataSnapshot.getChildrenCount();
+                UnitechHT682Text.setText(String.valueOf(uniHCount));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        mDevicesDatabaseReference.orderByChild("deviceModel").startAt(UNITECH_PA710).endAt("Unitech PA710\uf8ff").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                uniPCount = (int) dataSnapshot.getChildrenCount();
+                UnitechPA710Text.setText(String.valueOf(uniPCount));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        mDevicesDatabaseReference.orderByChild("deviceModel").startAt(APPLE_IPHONE).endAt("Apple iPhone\uf8ff").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                appICount = (int) dataSnapshot.getChildrenCount();
+                AppleText.setText(String.valueOf(appICount));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_dashboard_details, container, false);
+
+        arcViewInventory = view.findViewById(R.id.arc_view_inventory);
+        orderStatusRecycler = view.findViewById(R.id.upcoming_inventory_orders);
+        MotoMC3200Text = view.findViewById(R.id.mc3200_quantity);
+        UnitechHT682Text = view.findViewById(R.id.ht682_quantity);
+        UnitechPA710Text = view.findViewById(R.id.pa710_quantity);
+        ZebraTC71Text = view.findViewById(R.id.tc71_quantity);
+        AppleText = view.findViewById(R.id.iphone_quantity);
+        buildArcViewColors();
+        buildRecycler();
+        Log.e(TAG, "onCreateView: models size: " + models.size() );
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         mOrdersChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -100,13 +201,32 @@ public class DashDetailsFragment extends Fragment implements OrdersRecyclerAdapt
 
             }
         };
-
         mDevicesDatabaseListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                Device newDevice = dataSnapshot.getValue(Device.class);
-                updateArcView(newDevice.getDeviceModel(), 1);
+                Device addedDevice = dataSnapshot.getValue(Device.class);
+                Log.e(TAG, "onChildAdded: added: " +addedDevice.getDeviceModel());
+                int position = 0;
+                switch (addedDevice.getDeviceModel()) {
+                    case MOTOROLA_MC3200:
+                        position = 0;
+                        break;
+                    case UNITECH_HT682:
+                        position = 1;
+                        break;
+                    case ZEBRA_TC71:
+                        position = 2;
+                        break;
+                    case APPLE_IPHONE:
+                        position = 3;
+                        break;
+                    case UNITECH_PA710:
+                        position = 4;
+                        break;
+                }
+                models.add(new ArcProgressStackView.Model(" ", calculateProgress(addedDevice.getDeviceModel()), arcBGColors[position], arcStartColors[position]));
+                Log.e(TAG, "onChildAdded: model added: " + models.size() + addedDevice.getDeviceModel() );
             }
 
             @Override
@@ -116,8 +236,27 @@ public class DashDetailsFragment extends Fragment implements OrdersRecyclerAdapt
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                Device newDevice = dataSnapshot.getValue(Device.class);
-                updateArcView(newDevice.getDeviceModel(), -1);
+                Device removedDevice = dataSnapshot.getValue(Device.class);
+                int position = 0;
+                switch (removedDevice.getDeviceModel()) {
+                    case MOTOROLA_MC3200:
+                        position = 0;
+                        break;
+                    case UNITECH_HT682:
+                        position = 1;
+                        break;
+                    case ZEBRA_TC71:
+                        position = 2;
+                        break;
+                    case APPLE_IPHONE:
+                        position = 3;
+                        break;
+                    case UNITECH_PA710:
+                        position = 4;
+                        break;
+                }
+                models.add(new ArcProgressStackView.Model(" ", calculateProgress(removedDevice.getDeviceModel()), arcBGColors[position], arcStartColors[position]));
+
             }
 
             @Override
@@ -129,97 +268,14 @@ public class DashDetailsFragment extends Fragment implements OrdersRecyclerAdapt
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+
         };
-    }
+        mDevicesDatabaseReference.addChildEventListener(mDevicesDatabaseListener);
+        mOrdersDatabaseReference.addChildEventListener(mOrdersChildEventListener);
 
-    private void getCurrentInventoryValues() {
-        //Value Change Listeners for total inventory levels by item
-        mDevicesDatabaseReference = mFirebaseDatabase.getReference().child("devices");
 
-        mDevicesDatabaseReference.orderByChild("deviceModel").startAt(MOTOROLA_MC3200).endAt("Motorola MC3200\uf8ff").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                motoMCount = (int) dataSnapshot.getChildrenCount();
-                MotoMC3200Text.setText(motoMCount);
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
-
-        mDevicesDatabaseReference.orderByChild("deviceModel").startAt(ZEBRA_TC71).endAt("Zebra TC71\uf8ff").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                zebTCount = (int) dataSnapshot.getChildrenCount();
-                ZebraTC71Text.setText(zebTCount);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        mDevicesDatabaseReference.orderByChild("deviceModel").startAt(UNITECH_HT682).endAt("Unitech HT682\uf8ff").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                uniHCount = (int) dataSnapshot.getChildrenCount();
-                UnitechHT682Text.setText(uniHCount);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        mDevicesDatabaseReference.orderByChild("deviceModel").startAt(UNITECH_PA710).endAt("Unitech PA710\uf8ff").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                uniPCount = (int) dataSnapshot.getChildrenCount();
-                UnitechPA710Text.setText(uniPCount);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        mDevicesDatabaseReference.orderByChild("deviceModel").startAt(APPLE_IPHONE).endAt("Apple iPhone\uf8ff").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                appICount = (int) dataSnapshot.getChildrenCount();
-                AppleText.setText(appICount);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dashboard_details, container, false);
-
-        arcViewInventory = view.findViewById(R.id.arc_view_inventory);
-        orderStatusRecycler = view.findViewById(R.id.upcoming_inventory_orders);
-        MotoMC3200Text = view.findViewById(R.id.mc3200_quantity);
-        UnitechHT682Text = view.findViewById(R.id.ht682_quantity);
-        UnitechPA710Text = view.findViewById(R.id.pa710_quantity);
-        ZebraTC71Text = view.findViewById(R.id.tc71_quantity);
-        AppleText = view.findViewById(R.id.iphone_quantity);
-        buildArcViewColors();
-        buildArcView(0);
-        buildRecycler();
-        
-
-        return view;
     }
 
     private void buildRecycler() {
@@ -229,30 +285,6 @@ public class DashDetailsFragment extends Fragment implements OrdersRecyclerAdapt
         orderStatusRecycler.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.VERTICAL,false));
     }
 
-
-    private void updateArcView(String model, int change) {
-        int position = 0;
-        switch (model) {
-            case MOTOROLA_MC3200:
-                position = 0;
-                break;
-            case UNITECH_HT682:
-                position = 1;
-                break;
-            case ZEBRA_TC71:
-                position = 2;
-                break;
-            case APPLE_IPHONE:
-                position = 3;
-                break;
-            case UNITECH_PA710:
-                position = 4;
-                break;
-        }
-        models.remove(position);
-        models.add(position,new ArcProgressStackView.Model(" ", calculateProgress(model, change), arcBGColors[position], arcStartColors[position]));
-        initializeArcView();
-    }
 
     private void buildArcViewColors() {
         int change = 0;
@@ -265,48 +297,38 @@ public class DashDetailsFragment extends Fragment implements OrdersRecyclerAdapt
         }
     }
 
-    private void buildArcView(int change) {
-        //Set the arc models
-        models = new ArrayList<>();
-        models.add(new ArcProgressStackView.Model(" ", calculateProgress(MOTOROLA_MC3200, change), arcBGColors[0], arcStartColors[0]));
-        models.add(new ArcProgressStackView.Model(" ", calculateProgress(UNITECH_HT682, change), arcBGColors[1], arcStartColors[1]));
-        models.add(new ArcProgressStackView.Model(" ", calculateProgress(ZEBRA_TC71, change), arcBGColors[2], arcStartColors[2]));
-        models.add(new ArcProgressStackView.Model(" ", calculateProgress(APPLE_IPHONE, change), arcBGColors[3], arcStartColors[3]));
-        models.add(new ArcProgressStackView.Model(" ", calculateProgress(UNITECH_PA710, change), arcBGColors[4], arcStartColors[4]));
-        initializeArcView();
-    }
 
     private void initializeArcView() {
+        arcViewInventory.animateProgress();
+        Log.e(TAG, "initializeArcView: creating arcView");
+        Log.e(TAG, "initializeArcView: models size: " + models.size() );
         arcViewInventory.setModels(models);
         arcViewInventory.setIsShadowed(true);
         arcViewInventory.setIsLeveled(true);
         arcViewInventory.setSweepAngle(SWEEP_ANGLE);
         arcViewInventory.requestLayout();
+
+
     }
 
-    private float calculateProgress(String device, int valueChange) {
+    private float calculateProgress(String device) {
         getCurrentInventoryValues();
         float value = 0;
         float totalInventory = motoMCount + uniHCount + uniPCount + zebTCount + appICount;
         switch (device) {
             case MOTOROLA_MC3200:
-                motoMCount = motoMCount + valueChange;
                 value = (motoMCount/totalInventory)*100;
                 break;
             case UNITECH_HT682:
-                uniHCount = uniHCount + valueChange;
                 value = (uniHCount/totalInventory)*100;
                 break;
             case ZEBRA_TC71:
-                zebTCount = zebTCount + valueChange;
                 value = (zebTCount/totalInventory)*100;
                 break;
             case APPLE_IPHONE:
-                appICount = appICount + valueChange;
                 value = (appICount/totalInventory)*100;
                 break;
             case UNITECH_PA710:
-                uniPCount = uniPCount + valueChange;
                 value = (uniPCount/totalInventory)*100;
                 break;
         }

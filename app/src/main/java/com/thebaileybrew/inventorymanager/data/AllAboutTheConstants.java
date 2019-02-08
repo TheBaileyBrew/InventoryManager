@@ -22,4 +22,11 @@ public class AllAboutTheConstants {
     public final static String INITIAL_ORDER_CREATED = "order_created";
 
 
+
+    //Fragment Constants
+    public final static String DASHBOARD_DETAILS = "dashboard_details";
+    public final static String DASHBOARD_ADD = "dashboard_add";
+    public final static String DASHBOARD_REQUEST = "dashboard_request";
+
+
 }

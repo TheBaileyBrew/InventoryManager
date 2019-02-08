@@ -21,6 +21,10 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 
+import static com.thebaileybrew.inventorymanager.data.AllAboutTheConstants.DASHBOARD_ADD;
+import static com.thebaileybrew.inventorymanager.data.AllAboutTheConstants.DASHBOARD_DETAILS;
+import static com.thebaileybrew.inventorymanager.data.AllAboutTheConstants.DASHBOARD_REQUEST;
+
 public class InventoryActivity extends AppCompatActivity {
 
     private FlowingDrawer mDrawer;
@@ -39,6 +43,7 @@ public class InventoryActivity extends AppCompatActivity {
         initViews();
         setupToolbar();
         getCurrentPrefs();
+        loadFragment(DASHBOARD_DETAILS);
     }
 
     private void getCurrentPrefs() {
@@ -52,6 +57,7 @@ public class InventoryActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
             //TODO: Setup close app rather than navigate back to login screen
+
         }
     }
 
@@ -77,16 +83,13 @@ public class InventoryActivity extends AppCompatActivity {
                 //TODO: Set up Fragment exchange based on tab selection
                 switch(i1) {
                     case 0:
-                        Toast.makeText(InventoryActivity.this, "Tab 1 selected", Toast.LENGTH_SHORT).show();
-                        loadFragment("dashboard_details");
+                        loadFragment(DASHBOARD_DETAILS);
                         break;
                     case 1:
-                        Toast.makeText(InventoryActivity.this, "Tab 2 selected", Toast.LENGTH_SHORT).show();
-                        loadFragment("dashboard_add");
+                        loadFragment(DASHBOARD_ADD);
                         break;
                     case 2:
-                        Toast.makeText(InventoryActivity.this, "Tab 3 selected", Toast.LENGTH_SHORT).show();
-                        loadFragment("dashboard_request");
+                        loadFragment(DASHBOARD_REQUEST);
                         break;
                 }
 
